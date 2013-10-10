@@ -33,6 +33,11 @@ public class ORSEquivalenceClassDraw extends BaseDrawTest {
         draw("six_x.txt", "sixes");
     }
     
+    @Test
+    public void sevens() throws IOException {
+        draw("seven_x.txt", "sevens");
+    }
+    
     public void draw(String inputFilename, String outputPrefix) throws IOException {
         List<Graph> graphs = GraphFileReader.readAll(new File(IN_DIR, inputFilename).toString());
         Map<String, List<Graph>> orsEqCl = new HashMap<String, List<Graph>>();
