@@ -1,20 +1,11 @@
 package gendraw;
 
 import graph.model.Graph;
-import graph.model.GraphFileReader;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
-
-import layout.GraphGridLayout;
 
 import org.junit.Test;
 
@@ -50,37 +41,20 @@ public class CentralityLayout extends BaseDrawTest {
     }
     
     public void layout(String inputFilename, String outputFilename) throws IOException {
-        GraphFileReader graphs = new GraphFileReader(new FileReader(new File(IN_DIR, inputFilename)));
-       
-        int w = 100;
-        int h = 100;
-        boolean drawNumbers = false;
-        int edgeLen = 30;
-        
-        ParameterSet params = new ParameterSet();
-        params.set("edgeLength", edgeLen);
-        params.set("pointRadius", 5);
-        params.set("lineWidth", 2);
-        if (drawNumbers) {
-            params.set("drawNumberLabels", 1);
-        } else { 
-            params.set("drawNumberLabels", 0);
-        }
-        params.set("padding", 40);
-        
-        GraphGridLayout layout = new GraphGridLayout(w, h, params);
-        Map<Graph, Representation> reps = layout.layout(graphs); 
-        
-        Image image = makeBlankImage(layout.getTotalWidth(), layout.getTotalHeight());
-        Graphics2D graphics = (Graphics2D) image.getGraphics();
-        graphics.setColor(Color.BLACK);
-        for (Graph g : reps.keySet()) {
-            Representation rep = reps.get(g);
-            if (rep != null) {
-                Map<Vertex, Color> colorMap = new CentralityColorer().getColors(g);
-                rep.draw(graphics, params, colorMap);
+        GraphFileView view = new GraphFileView(IN_DIR, OUT_DIR);
+        view.layout(inputFilename, outputFilename, new DrawAction() {
+
+            @Override
+            public boolean perform(Map<Graph, Representation> reps, Graphics2D graphics, ParameterSet params) {
+                for (Graph g : reps.keySet()) {
+                    Representation rep = reps.get(g);
+                    if (rep != null) {
+                        Map<Vertex, Color> colorMap = new CentralityColorer().getColors(g);
+                        rep.draw(graphics, params, colorMap);
+                    }
+                }
+                return true;
             }
-        }
-        ImageIO.write((RenderedImage) image, "PNG", getFile(OUT_DIR, outputFilename + ".png"));
+        });
     }
 }
