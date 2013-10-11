@@ -25,9 +25,16 @@ public class GraphFileView {
     
     private String OUT_DIR = "output/centrality";
     
+    private boolean showErrors;
+    
     public GraphFileView(String inDir, String outDir) {
+        this(inDir, outDir, true);
+    }
+    
+    public GraphFileView(String inDir, String outDir, boolean showErrors) {
         this.IN_DIR = inDir;
         this.OUT_DIR = outDir;
+        this.showErrors = showErrors;
     }
     
     public void layout(Iterable<Graph> graphs, String outputFilename, DrawAction action) throws IOException {
@@ -47,7 +54,7 @@ public class GraphFileView {
         }
         params.set("padding", 40);
         
-        GraphGridLayout layout = new GraphGridLayout(w, h, params);
+        GraphGridLayout layout = new GraphGridLayout(w, h, params, showErrors);
         Map<Graph, Representation> reps = layout.layout(graphs); 
         
         Image image = makeBlankImage(layout.getTotalWidth(), layout.getTotalHeight());
