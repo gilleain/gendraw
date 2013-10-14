@@ -24,6 +24,11 @@ public class FullereneCompare {
     }
     
     @Test
+    public void testC240() throws IOException {
+        testGraph("/Users/maclean/Documents/molecules/FullereneLib/C240.cc1");
+    }
+    
+    @Test
     public void testC180() throws IOException {
         testGraph("/Users/maclean/Documents/molecules/FullereneLib/C180.cc1");
     }
@@ -103,6 +108,21 @@ public class FullereneCompare {
         testDir("/Users/maclean/Documents/molecules/FullereneLib/C94");
     }
     
+    @Test
+    public void testC96() throws IOException {
+        testDir("/Users/maclean/Documents/molecules/FullereneLib/C96");
+    }
+    
+    @Test
+    public void testC98() throws IOException {
+        testDir("/Users/maclean/Documents/molecules/FullereneLib/C98");
+    }
+    
+    @Test
+    public void testC100() throws IOException {
+        testDir("/Users/maclean/Documents/molecules/FullereneLib/C100");
+    }
+    
     public void testDir(String dir) throws IOException {
         for (String filename : new File(dir).list()) {
             if (filename.endsWith("cc1")) {
@@ -121,9 +141,12 @@ public class FullereneCompare {
         }
         Partition sigPartition = SignaturePartitioner.getSigPartition(g);
         Partition cenPartition = CentralityCalculator.getVertexPartition(g);
-//        summary(sigPartition);
-//        summary(cenPartition);
+//        Partition mixMoPartition = MorganPartitioner.centralityMorganPartition(g);
+        summary(sigPartition);
+        summary(cenPartition);
+//        summary(mixMoPartition);
         if (sigPartition.equals(cenPartition)) {
+//        if (sigPartition.equals(mixMoPartition)) {
             System.out.println("EQUAL " + filename);
         } else {
             System.out.println("NEQUAL " + filename);

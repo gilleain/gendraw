@@ -1,7 +1,8 @@
-package gendraw;
+package test;
 
 import java.io.IOException;
 
+import gendraw.Chem3DReader;
 import graph.model.Graph;
 
 import org.junit.Test;

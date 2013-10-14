@@ -45,7 +45,8 @@ public class EquivalenceClassComparisonDraw extends BaseDrawTest {
         List<Graph> graphs = GraphFileReader.readAll(new File(IN_DIR, inputFilename).toString());
         List<Graph> fails = new ArrayList<Graph>();
         for (Graph g : graphs) {
-            Partition pCent = CentralityCalculator.getVertexPartition(g);
+//            Partition pCent = CentralityCalculator.getVertexPartition(g);
+            Partition pCent = MorganPartitioner.centralityMorganPartition(g);
             Partition pSig = SignaturePartitioner.getSigPartition(g);
             if (!pCent.equals(pSig)) {
                 System.out.println(pCent + "\n" + pSig + "\n" + g + "\n-------------\n");
